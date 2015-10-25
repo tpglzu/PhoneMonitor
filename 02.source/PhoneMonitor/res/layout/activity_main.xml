@@ -1,0 +1,81 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_gravity="center_vertical"
+    android:gravity="center_horizontal"
+    android:orientation="vertical"
+    android:paddingBottom="@dimen/activity_vertical_margin"
+    android:paddingLeft="@dimen/activity_horizontal_margin"
+    android:paddingRight="@dimen/activity_horizontal_margin"
+    android:paddingTop="@dimen/activity_vertical_margin"
+    android:background="@drawable/shape_box_main"
+    tools:context="com.daipeng.phonemonitor.activity.MainActivity" >
+
+    <TextView
+        android:id="@+id/page_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/activity_mail_label_title"
+        android:textSize="30sp"
+        android:textAppearance="?android:attr/textAppearanceMedium" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_gravity="center_vertical"
+        android:gravity="center_horizontal"
+        android:orientation="vertical" 
+        android:background="@drawable/shape_box"
+        android:layout_marginTop="20dip"
+        android:layout_marginBottom="30dip"
+        >
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="40dp"
+            android:gravity="center" >
+
+            <TextView
+                android:id="@+id/serviceStatusLabel"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/activity_main_textview_servicestatus_label" />
+
+            <TextView
+                android:id="@+id/serviceStatus"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/activity_main_textview_servicestatus_unknow" />
+        </LinearLayout>
+
+        <Button
+            android:id="@+id/setting"
+            android:layout_width="208dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="40dp"
+            android:background="@drawable/button_shape"
+            android:onClick="onSetting"
+            android:text="@string/activity_main_button_label_setting" />
+
+        <Button
+            android:id="@+id/serviceStart"
+            android:layout_width="204dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="23dp"
+            android:background="@drawable/button_shape"
+            android:onClick="onStartService"
+            android:text="@string/activity_main_button_label_service_start" />
+
+        <Button
+            android:id="@+id/serviceStop"
+            android:layout_width="201dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="23dp"
+            android:background="@drawable/button_shape"
+            android:onClick="onStopService"
+            android:text="@string/activity_main_button_label_service_stop" />
+    </LinearLayout>
+
+</LinearLayout>

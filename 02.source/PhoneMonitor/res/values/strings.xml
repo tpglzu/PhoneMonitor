@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">监视器</string>
+    <string name="hello_world">Hello world!</string>
+    <string name="action_settings">Settings</string>
+    
+    <string name="activity_main_label_title">手机监视器</string>
+    <string name="activity_main_button_label_setting">参数设定</string>
+	<string name="activity_main_button_label_service_start">启动监视</string>
+    <string name="activity_main_button_label_service_stop">停止监视</string>
+    <string name="activity_mail_label_title">主控制面板</string>
+    
+    <string name="activity_setting_label_mailsetting">邮件设定</string>
+    <string name="activity_setting_label_basicsetting">基础设定</string>
+    <string name="activity_setting_label_title">参数设定面板</string>
+    <string name="activity_setting_label_phone">电话监听:</string>
+    <string name="activity_setting_label_sms">短信监听:</string>
+    <string name="activity_setting_label_battery">电池监听:</string>
+    <string name="activity_setting_switch_on">开</string>
+    <string name="activity_setting_switch_off">关</string>
+    <string name="activity_setting_botton_back">返回</string>
+    <string name="activity_setting_botton_save">保存</string>
+    <string name="activity_setting_botton_mailtest">邮件测试</string>
+    <string name="activity_setting_mail_toaddress">Mail To:</string>
+    <string name="activity_setting_mail_fromaddress">Mail From:</string>
+    <string name="activity_setting_mail_smtphost">SMTP Host:</string>
+    <string name="activity_setting_mail_smtpport">SMTP Port:</string>
+    <string name="activity_setting_mail_smtpauth">SMTP Auth:</string>
+    <string name="activity_setting_mail_startTls">Start Tls:</string>
+    <string name="activity_setting_mail_username">用户名:</string>
+    <string name="activity_setting_mail_userpwd">用户密码:</string>
+
+    <string name="activity_main_textview_servicestatus_label">后台服务状态：</string>
+    <string name="activity_main_textview_servicestatus_running">已启动</string>
+    <string name="activity_main_textview_servicestatus_stopping">已停止</string>
+    <string name="activity_main_textview_servicestatus_unknow">查询失败</string>
+</resources>
