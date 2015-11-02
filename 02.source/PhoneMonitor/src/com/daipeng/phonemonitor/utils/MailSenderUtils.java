@@ -1,14 +1,21 @@
 package com.daipeng.phonemonitor.utils;
 
+import java.io.File;
+import java.util.Enumeration;
 import java.util.List;
 import java.util.Properties;
 
+import javax.activation.DataHandler;
+import javax.activation.FileDataSource;
 import javax.mail.Message;
+import javax.mail.Multipart;
 import javax.mail.PasswordAuthentication;
 import javax.mail.Session;
 import javax.mail.Transport;
 import javax.mail.internet.InternetAddress;
+import javax.mail.internet.MimeBodyPart;
 import javax.mail.internet.MimeMessage;
+import javax.mail.internet.MimeMultipart;
 
 import com.daipeng.phonemonitor.comon.ImmutableValues;
 
@@ -51,9 +58,27 @@ public class MailSenderUtils {
             	LogUtils.d(ImmutableValues.MAIL_SEND_TAG,"send to : " + toAddr);
             	message.addRecipient(Message.RecipientType.TO, new InternetAddress(toAddr));
 			}
-
+            
             message.setSubject(mailConfig.getSubject());
             message.setText(mailConfig.getMsgBody());
+
+            List<File> attachFiles = mailConfig.getAttachFile();
+            if(attachFiles != null && !attachFiles.isEmpty()){
+            	Multipart mp = new MimeMultipart("mixed");  
+                MimeBodyPart mbp = new MimeBodyPart();    
+                mbp.setText(mailConfig.getMsgBody());
+                mp.addBodyPart(mbp);
+	            for (File efile : attachFiles) {
+	            	mbp=new MimeBodyPart();  
+	                FileDataSource fds=new FileDataSource(efile); //得到数据源  
+	                mbp.setDataHandler(new DataHandler(fds)); //得到附件本身并至入BodyPart  
+	                mbp.setFileName(fds.getName());  //得到文件名同样至入BodyPart  
+	                mp.addBodyPart(mbp);  
+				}
+                message.setContent(mp); //Multipart加入到信件 
+            }
+            message.saveChanges();  
+            
             Transport.send(message);
         } catch (Exception e) {
         	LogUtils.e(ImmutableValues.MAIL_SEND_TAG, "mail send error...",e);

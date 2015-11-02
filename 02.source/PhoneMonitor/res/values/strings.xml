@@ -9,6 +9,7 @@
     <string name="activity_main_button_label_setting">参数设定</string>
 	<string name="activity_main_button_label_service_start">启动监视</string>
     <string name="activity_main_button_label_service_stop">停止监视</string>
+    <string name="activity_main_button_label_log_collect">Log收集</string>
     <string name="activity_mail_label_title">主控制面板</string>
     
     <string name="activity_setting_label_mailsetting">邮件设定</string>

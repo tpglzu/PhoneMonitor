@@ -3,7 +3,7 @@ package com.daipeng.phonemonitor.comon;
 public class ImmutableValues {
 	public static final String MAIN_ACTIVE_TAG = "MainActivity";
 	public static final String SETTING_ACTIVE_TAG = "SettingsActivity";
-	public static final String MONITOR_RECEIVER_FLG = "MonitorReceiver";
+	public static final String MONITOR_RECEIVER_TAG = "MonitorReceiver";
 	public static final String MONITOR_SERVICE_TAG = "MonitorService";
 	public static final String MAIL_SEND_TASK_TAG = "AsyncMailSendTask";
 	public static final String MAIL_SEND_TAG = "MailSendUtils";

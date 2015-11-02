@@ -37,6 +37,9 @@ public class MonitorReceiver extends BroadcastReceiver {
 	private boolean isBatteryEnable;
 	
 	public MonitorReceiver(MonitorService monitorService){
+		
+		LogUtils.i(ImmutableValues.MONITOR_RECEIVER_TAG, "MonitorReceiver new()");
+		
 		Map<String, String> settings = PrefsUtils.read(monitorService, ImmutableValues.APP_CONF_FILE_NAME);
 		mailConfig = MailConfig.loadMailConfig(settings);
 		
@@ -52,17 +55,17 @@ public class MonitorReceiver extends BroadcastReceiver {
 	public void onReceive(Context context, Intent intent) {
 		
 		if(!mailConfig.isValiable()){
-			LogUtils.e(ImmutableValues.MONITOR_RECEIVER_FLG, "mail setting is wrong.");
+			LogUtils.e(ImmutableValues.MONITOR_RECEIVER_TAG, "mail setting is wrong.");
 			return;
 		}
 		
 		if(!NetworkUtils.isOpenNetwork(context)){
-			LogUtils.e(ImmutableValues.MONITOR_RECEIVER_FLG, "has not valiable network.");
+			LogUtils.e(ImmutableValues.MONITOR_RECEIVER_TAG, "has not valiable network.");
 			return;
 		}
 		
 		String actionName = intent.getAction();
-		LogUtils.d(ImmutableValues.MONITOR_RECEIVER_FLG, "Receiver Broadcast action:" + intent.getAction());
+		LogUtils.d(ImmutableValues.MONITOR_RECEIVER_TAG, "Receiver Broadcast action:" + intent.getAction());
 		
 		String mailSubject = "";
 		String mailBody = "";
@@ -74,7 +77,7 @@ public class MonitorReceiver extends BroadcastReceiver {
 			
 			String extraState = intent.getStringExtra(TelephonyManager.EXTRA_STATE);
 			
-			LogUtils.d(ImmutableValues.MONITOR_RECEIVER_FLG, "Receiver Broadcast action extra_state:" + extraState);
+			LogUtils.d(ImmutableValues.MONITOR_RECEIVER_TAG, "Receiver Broadcast action extra_state:" + extraState);
 			
 			//只有未接来电时，才发送。
 			if(TextUtils.isEmpty(preStatus)){

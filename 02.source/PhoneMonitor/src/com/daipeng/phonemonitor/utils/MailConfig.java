@@ -1,5 +1,6 @@
 package com.daipeng.phonemonitor.utils;
 
+import java.io.File;
 import java.util.List;
 import java.util.Map;
 
@@ -34,6 +35,16 @@ public class MailConfig {
 	
 	private String sendResult;
 	
+	private List<File> attachFile;
+	
+	public List<File> getAttachFile() {
+		return attachFile;
+	}
+
+	public void setAttachFile(List<File> attachFile) {
+		this.attachFile = attachFile;
+	}
+
 	public MailConfig(){}
 	
 	public static MailConfig loadMailConfig(Context context){

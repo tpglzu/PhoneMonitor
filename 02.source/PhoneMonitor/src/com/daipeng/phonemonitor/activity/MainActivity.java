@@ -1,15 +1,22 @@
 package com.daipeng.phonemonitor.activity;
 
+import java.util.Date;
+
 import com.daipeng.phonemonitor.R;
 import com.daipeng.phonemonitor.comon.ImmutableValues;
 import com.daipeng.phonemonitor.service.MonitorService;
+import com.daipeng.phonemonitor.tasks.AsyncMailSendTask;
+import com.daipeng.phonemonitor.utils.DateUtils;
 import com.daipeng.phonemonitor.utils.LogUtils;
+import com.daipeng.phonemonitor.utils.MailConfig;
 import com.daipeng.phonemonitor.utils.LogUtils.LogType;
 import com.daipeng.phonemonitor.utils.ServiceUtils;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -25,6 +32,8 @@ public class MainActivity extends Activity {
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
+		Log.i(ImmutableValues.MAIN_ACTIVE_TAG, "Log location : " + LogUtils.getLogLocation());
+		
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main);
 		
@@ -116,4 +125,19 @@ public class MainActivity extends Activity {
 		LogUtils.log(LogType.DEBUG,ImmutableValues.MAIN_ACTIVE_TAG, "onStopService end...");
 	}
 	
+	public void onCollectLogs(View source){
+		LogUtils.log(LogType.DEBUG,ImmutableValues.SETTING_ACTIVE_TAG, "onCollectLogs start...");
+		MailConfig mailConfig = MailConfig.loadMailConfig(this);
+		mailConfig.setSubject("[Phone Monitor] Log Collection - " + DateUtils.formateYMDHMS(new Date()));
+		mailConfig.setMsgBody("Log Collection");
+		mailConfig.setAttachFile(LogUtils.getLogFiles(5));
+		
+		Uri.Builder builder = new Uri.Builder();
+        AsyncMailSendTask task = new AsyncMailSendTask(mailConfig);
+        task.execute(builder);
+		
+        Toast.makeText(this, "Log“—∑¢ÀÕ", Toast.LENGTH_LONG).show();
+		LogUtils.log(LogType.DEBUG,ImmutableValues.SETTING_ACTIVE_TAG, "onCollectLogs end...");
+		
+	}
 }
