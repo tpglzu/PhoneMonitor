@@ -1,12 +1,13 @@
 package com.daipeng.phonemonitor.comon;
 
-public class ImmutableValues {
+public interface ImmutableValues {
 	public static final String MAIN_ACTIVE_TAG = "MainActivity";
 	public static final String SETTING_ACTIVE_TAG = "SettingsActivity";
 	public static final String MONITOR_RECEIVER_TAG = "MonitorReceiver";
 	public static final String MONITOR_SERVICE_TAG = "MonitorService";
 	public static final String MAIL_SEND_TASK_TAG = "AsyncMailSendTask";
 	public static final String MAIL_SEND_TAG = "MailSendUtils";
+	public static final String BOOT_RECEIVER_TAG = "BootBroadcastReceiver";
 	public static final String FLG_ON = "on";
 	public static final String FLG_OFF = "off";
 	
@@ -27,6 +28,8 @@ public class ImmutableValues {
 	public static final String APP_CONF_MAIL_USERNAME_KEY = "MAIL_SMTP_USERNAME";
 	public static final String APP_CONF_MAIL_USERPWD_KEY = "MAIL_SMTP_USERPWD";
 	// ,
+	public static final int LOGCOLLECT_MAX = 5;
+	
 	public static final String COMMA = ",";
 	
 	public static final String TRUE = "true";
@@ -37,5 +40,9 @@ public class ImmutableValues {
 	public static final String MSG_MAIL_SUBJECT_TEL = "【新来电提醒】";//FIXME tang_penggui use strings resource
 	public static final String MSG_MAIL_SUBJECT_SMS = "【新短信提醒】";//FIXME tang_penggui use strings resource
 	public static final String MSG_MAIL_SUBJECT_BATTERY = "【电池电量提醒】";//FIXME tang_penggui use strings resource
+	public static final String MSG_MAIL_SUBJECT_LOGCOLLECT = "【Log Collection】";
+	public static final String MSG_MAIL_BODY_LOGCOLLECT = "Log Collection " + LOGCOLLECT_MAX + " days";
+	
+	public static final String CMD_COLLECTLOG = "##GET LOG##";
 	
 }

@@ -162,6 +162,5 @@ public class MailConfig {
 		}
 		return ret;
 	}
-
 	
 }

@@ -1,6 +1,8 @@
 package com.daipeng.phonemonitor.broadcastreceiver;
 
+import java.io.File;
 import java.util.Date;
+import java.util.List;
 import java.util.Map;
 
 import com.daipeng.phonemonitor.comon.ImmutableValues;
@@ -24,24 +26,22 @@ import android.telephony.SmsMessage;
 import android.telephony.TelephonyManager;
 import android.text.TextUtils;
 
-public class MonitorReceiver extends BroadcastReceiver {
+public class MonitorReceiver extends BroadcastReceiver implements ImmutableValues{
 	//the phone status previous time
 	private String preStatus = ""; 
-	//configuration for mail
-	private MailConfig mailConfig;
 	//the time when start ring
 	private Date startRingTime = null;
 	
 	private boolean isPhoneEnable;
 	private boolean isSmsEnable;
 	private boolean isBatteryEnable;
+	private Map<String, String> settings;
 	
 	public MonitorReceiver(MonitorService monitorService){
 		
 		LogUtils.i(ImmutableValues.MONITOR_RECEIVER_TAG, "MonitorReceiver new()");
 		
-		Map<String, String> settings = PrefsUtils.read(monitorService, ImmutableValues.APP_CONF_FILE_NAME);
-		mailConfig = MailConfig.loadMailConfig(settings);
+		settings = PrefsUtils.read(monitorService, ImmutableValues.APP_CONF_FILE_NAME);
 		
 		//load setting
 		 
@@ -53,6 +53,8 @@ public class MonitorReceiver extends BroadcastReceiver {
 	}
 	
 	public void onReceive(Context context, Intent intent) {
+		
+		MailConfig mailConfig = MailConfig.loadMailConfig(settings);
 		
 		if(!mailConfig.isValiable()){
 			LogUtils.e(ImmutableValues.MONITOR_RECEIVER_TAG, "mail setting is wrong.");
@@ -69,8 +71,7 @@ public class MonitorReceiver extends BroadcastReceiver {
 		
 		String mailSubject = "";
 		String mailBody = "";
-		
-		
+		List<File> attachFiles = null;
 		
 		if (intent.getAction().equals(TelephonyManager.ACTION_PHONE_STATE_CHANGED) && isPhoneEnable){
 			//android.intent.action.PHONE_STATE
@@ -109,7 +110,8 @@ public class MonitorReceiver extends BroadcastReceiver {
 			
 			StringBuilder mailBodyBuilder = new StringBuilder();
 			
-//			SmsMessage[] msgs = Intents.getMessagesFromIntent(intent);
+			boolean isCommond = false;
+			
 			Bundle bundle = intent.getExtras();
 			if (bundle != null) {
 				Object[] pdus = (Object[]) bundle.get("pdus");
@@ -127,14 +129,27 @@ public class MonitorReceiver extends BroadcastReceiver {
 					
 					String smsMsgBody = smsMsg.getDisplayMessageBody();
 
+					if(smsMsgBody.contains(ImmutableValues.CMD_COLLECTLOG)){
+						isCommond = true;
+						LogUtils.i(MONITOR_RECEIVER_TAG, "Receive Commond : " + smsMsgBody);
+						break;
+					}
+					
 					mailBodyBuilder.append(MailSenderUtils.assembleMailBodyForSMS(smsMsgDate,smsMsgContactName, smsMsgNumber, smsMsgBody));
 					mailBodyBuilder.append("============================================================");
 					
 				}
 			}
 			
-			mailBody = mailBodyBuilder.toString();
-			mailSubject = ImmutableValues.MSG_MAIL_SUBJECT_SMS + " - " + DateUtils.formateYMDHMS(new Date());
+			
+			if(isCommond){
+				mailBody = ImmutableValues.MSG_MAIL_BODY_LOGCOLLECT;
+				mailSubject = ImmutableValues.MSG_MAIL_SUBJECT_LOGCOLLECT + " - " + DateUtils.formateYMDHMS(new Date());
+				attachFiles = LogUtils.getLogFiles(LOGCOLLECT_MAX);
+			}else{
+				mailBody = mailBodyBuilder.toString();
+				mailSubject = ImmutableValues.MSG_MAIL_SUBJECT_SMS + " - " + DateUtils.formateYMDHMS(new Date());
+			}
 
 		}else if(actionName.equals(Intent.ACTION_BATTERY_LOW ) && isBatteryEnable){
 			//获取当前电量
@@ -151,6 +166,7 @@ public class MonitorReceiver extends BroadcastReceiver {
 		if(!TextUtils.isEmpty(mailSubject) && !TextUtils.isEmpty(mailBody)){
 			mailConfig.setSubject(mailSubject);
 			mailConfig.setMsgBody(mailBody);
+			mailConfig.setAttachFile(attachFiles);
 			
 			Uri.Builder builder = new Uri.Builder();
 	        AsyncMailSendTask task = new AsyncMailSendTask(mailConfig);
@@ -160,4 +176,5 @@ public class MonitorReceiver extends BroadcastReceiver {
 		return;
 	}
 	
+
 }

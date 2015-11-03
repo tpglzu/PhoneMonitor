@@ -24,7 +24,7 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
-public class MainActivity extends Activity {
+public class MainActivity extends Activity implements ImmutableValues{
 
 	private Button startServiceButton;
 	private Button stopServiceButton;
@@ -32,7 +32,7 @@ public class MainActivity extends Activity {
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
-		Log.i(ImmutableValues.MAIN_ACTIVE_TAG, "Log location : " + LogUtils.getLogLocation());
+		Log.i(MAIN_ACTIVE_TAG, "Log location : " + LogUtils.getLogLocation());
 		
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main);
@@ -68,10 +68,10 @@ public class MainActivity extends Activity {
 	 * @param source
 	 */
 	public void onSetting(View source){
-		LogUtils.log(LogType.DEBUG,ImmutableValues.MAIN_ACTIVE_TAG, "onSetting start...");
+		LogUtils.log(LogType.DEBUG,MAIN_ACTIVE_TAG, "onSetting start...");
 		Intent intent = new Intent(this, SettingsActivity.class);
 	    startActivity(intent);
-		LogUtils.log(LogType.DEBUG,ImmutableValues.MAIN_ACTIVE_TAG, "onSetting end...");
+		LogUtils.log(LogType.DEBUG,MAIN_ACTIVE_TAG, "onSetting end...");
 	}
 	
 	/**
@@ -79,7 +79,7 @@ public class MainActivity extends Activity {
 	 * @param source
 	 */
 	public void onStartService(View source){
-		LogUtils.log(LogType.DEBUG,ImmutableValues.MAIN_ACTIVE_TAG, "onStartService start...");
+		LogUtils.log(LogType.DEBUG,MAIN_ACTIVE_TAG, "onStartService start...");
 		
 		Intent intent=new Intent(this,MonitorService.class);
         startService(intent);
@@ -97,7 +97,7 @@ public class MainActivity extends Activity {
         
         Toast.makeText(this, toastMsg, Toast.LENGTH_LONG).show();
         
-		LogUtils.log(LogType.DEBUG,ImmutableValues.MAIN_ACTIVE_TAG, "onStartService end...");
+		LogUtils.log(LogType.DEBUG,MAIN_ACTIVE_TAG, "onStartService end...");
 	}
 	
 	/**
@@ -105,7 +105,7 @@ public class MainActivity extends Activity {
 	 * @param source
 	 */
 	public void onStopService(View source){
-		LogUtils.log(LogType.DEBUG,ImmutableValues.MAIN_ACTIVE_TAG, "onStopService start...");
+		LogUtils.log(LogType.DEBUG,MAIN_ACTIVE_TAG, "onStopService start...");
 		Intent intent=new Intent(this,MonitorService.class);
         stopService(intent);
         
@@ -122,22 +122,22 @@ public class MainActivity extends Activity {
         
         Toast.makeText(this, toastMsg, Toast.LENGTH_LONG).show();
         
-		LogUtils.log(LogType.DEBUG,ImmutableValues.MAIN_ACTIVE_TAG, "onStopService end...");
+		LogUtils.log(LogType.DEBUG,MAIN_ACTIVE_TAG, "onStopService end...");
 	}
 	
 	public void onCollectLogs(View source){
-		LogUtils.log(LogType.DEBUG,ImmutableValues.SETTING_ACTIVE_TAG, "onCollectLogs start...");
+		LogUtils.log(LogType.DEBUG,SETTING_ACTIVE_TAG, "onCollectLogs start...");
 		MailConfig mailConfig = MailConfig.loadMailConfig(this);
-		mailConfig.setSubject("[Phone Monitor] Log Collection - " + DateUtils.formateYMDHMS(new Date()));
+		mailConfig.setSubject(MSG_MAIL_SUBJECT_LOGCOLLECT + " - " + DateUtils.formateYMDHMS(new Date()));
 		mailConfig.setMsgBody("Log Collection");
-		mailConfig.setAttachFile(LogUtils.getLogFiles(5));
+		mailConfig.setAttachFile(LogUtils.getLogFiles(LOGCOLLECT_MAX));
 		
 		Uri.Builder builder = new Uri.Builder();
         AsyncMailSendTask task = new AsyncMailSendTask(mailConfig);
         task.execute(builder);
 		
         Toast.makeText(this, "Log“—∑¢ÀÕ", Toast.LENGTH_LONG).show();
-		LogUtils.log(LogType.DEBUG,ImmutableValues.SETTING_ACTIVE_TAG, "onCollectLogs end...");
+		LogUtils.log(LogType.DEBUG,SETTING_ACTIVE_TAG, "onCollectLogs end...");
 		
 	}
 }
