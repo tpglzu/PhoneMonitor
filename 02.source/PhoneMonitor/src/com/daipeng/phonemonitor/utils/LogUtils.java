@@ -1,19 +1,13 @@
 package com.daipeng.phonemonitor.utils;
 
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.PrintWriter;
-import java.io.StringWriter;
-import java.io.Writer;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Comparator;
 import java.util.Date;
-import java.util.Iterator;
 import java.util.List;
-import java.util.Map;
 
 import android.os.Environment;
 import android.util.Log;
@@ -175,11 +169,11 @@ public class LogUtils {
 					public int compare(File f1, File f2) {
 						long diff = f1.lastModified() - f2.lastModified();
 						if (diff > 0)
-							return 1;
+							return -1;
 						else if (diff == 0)
 							return 0;
 						else
-							return -1;
+							return 1;
 					}
 				});
 				int cnt = 0;
