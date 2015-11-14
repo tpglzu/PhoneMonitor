@@ -1,7 +1,6 @@
 package com.daipeng.phonemonitor.utils;
 
 import java.io.File;
-import java.util.Enumeration;
 import java.util.List;
 import java.util.Properties;
 
@@ -29,19 +28,49 @@ public class MailSenderUtils {
     private MailSenderUtils(){
         
     }
+    
+    
+    /**
+     * send the mail. if mail config can not send mail,use the spare try to send
+     * @param mailConfigs
+     * @param mailContent
+     * @return
+     */
+    public static boolean send(List<MailConfig> mailConfigs,MailContent mailContent){
+    	if(mailConfigs == null || mailConfigs.size() < 1){
+    		LogUtils.e(ImmutableValues.MAIL_SEND_TAG, "°Ô°Ô°Ô  do not have useabled mail configuration ... °Ô°Ô°Ô ");
+    		return false;
+    	}
+    	
+    	for (MailConfig mailConfig : mailConfigs) {
+			boolean sendResult = send(mailConfig, mailContent);
+			LogUtils.i(ImmutableValues.MAIL_SEND_TAG, "Send mail use config : " + mailConfig.getMailConfigKbn().getName() + ", result : " + sendResult);
+			if(sendResult){
+				return true;
+			}
+		}
+    	
+    	return false;
+    }
      
-    public static void send(final MailConfig mailConfig){
+    /**
+     * send the mail
+     * @param mailConfig mail config
+     * @param mailContent mail content
+     * @return true:send successful,false:send failed
+     */
+    public static boolean send(final MailConfig mailConfig,MailContent mailContent){
     	
     	if(mailConfig == null){
     		LogUtils.e(ImmutableValues.MAIL_SEND_TAG, "°Ô°Ô°Ô mail config not defined °Ô°Ô°Ô ");
     	}
     	
-    	Properties properties =System.getProperties();
-        properties.put(MailConfig.KEY_MAIL_SMTP_HOST, mailConfig.getSmtpHost());
-        properties.put(MailConfig.KEY_MAIL_SMTP_PORT, mailConfig.getSmtpPort());
-        properties.put(MailConfig.KEY_MAIL_SMTP_AUTH, mailConfig.getSmtpAuth());
-        properties.put(MailConfig.KEY_MAIL_SMTP_STARTTTLS_ENABLE, mailConfig.getSmtpStarttlsEnabled());
+    	Properties properties = getMailProperties(mailConfig);
 
+    	if(properties == null){
+    		LogUtils.e(ImmutableValues.MAIL_SEND_TAG, "°Ô°Ô°Ô mail config not correct ...°Ô°Ô°Ô ");
+    	}
+    	
         Session session = Session.getDefaultInstance(properties, new javax.mail.Authenticator(){
             protected PasswordAuthentication getPasswordAuthentication(){
                 return new PasswordAuthentication(mailConfig.getUserName(),mailConfig.getUserPassword());
@@ -59,14 +88,14 @@ public class MailSenderUtils {
             	message.addRecipient(Message.RecipientType.TO, new InternetAddress(toAddr));
 			}
             
-            message.setSubject(mailConfig.getSubject());
-            message.setText(mailConfig.getMsgBody());
+            message.setSubject(mailContent.getSubject());
+            message.setText(mailContent.getMsgBody());
 
-            List<File> attachFiles = mailConfig.getAttachFile();
+            List<File> attachFiles = mailContent.getAttachFile();
             if(attachFiles != null && !attachFiles.isEmpty()){
             	Multipart mp = new MimeMultipart("mixed");  
                 MimeBodyPart mbp = new MimeBodyPart();    
-                mbp.setText(mailConfig.getMsgBody());
+                mbp.setText(mailContent.getMsgBody());
                 mp.addBodyPart(mbp);
 	            for (File efile : attachFiles) {
 	            	mbp=new MimeBodyPart();  
@@ -79,14 +108,18 @@ public class MailSenderUtils {
             }
             message.saveChanges();  
             
-            Transport.send(message);
+            sendMessage(message, session, mailConfig);
         } catch (Exception e) {
         	LogUtils.e(ImmutableValues.MAIL_SEND_TAG, "mail send error...",e);
-        	mailConfig.setSendResult("mail send error...Exception:" + e.getCause());
-        	return;
+        	e.printStackTrace();
+        	mailContent.setSendResult("mail send error...Exception:" + e.getCause());
+        	return false;
         }
-        mailConfig.setSendResult("mail send successful..");
+        mailContent.setSendResult("mail send successful..");
+        return true;
     }
+    
+    
     
     public static String assembleMailBodyForPhone(String telNo,String contactName,String time, long ringTimesSec){
     	StringBuilder sb = new StringBuilder();
@@ -117,6 +150,67 @@ public class MailSenderUtils {
     	sb.append("°æ £”‡µÁ¡ø°ø£∫"+ batteryPercent +"\n");//FIXME tang_penggui use strings resource
     	
     	return sb.toString();
+	}
+	
+	private static Properties getMailProperties(MailConfig mailConfig){
+		
+		Properties properties =System.getProperties();
+		
+		String mailEncryptType = mailConfig.getSmtpEncryptType();
+		properties.put(MailConfig.KEY_MAIL_SMTP_HOST, mailConfig.getSmtpHost());
+		properties.put(MailConfig.KEY_MAIL_SMTP_AUTH, mailConfig.getSmtpAuth());
+		properties.put(MailConfig.KEY_MAIL_SMTP_PORT, mailConfig.getSmtpPort());
+		properties.put(MailConfig.KEY_MAIL_SMTP_DEBUG, "true");
+		
+		if(ImmutableValues.APP_CONF_MAIL_ENCRYPT_TLS.equals(mailEncryptType)){
+			//TLS
+	        properties.put(MailConfig.KEY_MAIL_SMTP_STARTTTLS_ENABLE, "true");
+		}else if(ImmutableValues.APP_CONF_MAIL_ENCRYPT_SSL.equals(mailEncryptType)){
+			//SSL
+			properties.put(MailConfig.KEY_MAIL_SMTP_SSL_FACTORYPORT, mailConfig.getSmtpPort());
+			properties.put(MailConfig.KEY_MAIL_SMTP_SSL_FACTORYCLASS,MailConfig.VALUE_MAIL_SMTP_SSL_FACTORYCLASS);
+			properties.put(MailConfig.KEY_MAIL_SMTP_SSL_FALLBACK, MailConfig.VALUE_MAIL_SMTP_SSL_FALLBACK);
+		}else{
+			//Not defined
+			LogUtils.e(ImmutableValues.MAIL_SEND_TAG, "unknown encrypt type. mail not sended ...");
+			properties = null;
+		}
+		
+		return properties;
+        
+	}
+	
+	private static void sendMessage(MimeMessage message,Session session,MailConfig mailConfig) throws Exception{
+		String mailEncryptType = mailConfig.getSmtpEncryptType();
+		if(ImmutableValues.APP_CONF_MAIL_ENCRYPT_SSL.equals(mailEncryptType)){
+			//SSL
+			Transport transport = null;
+			try{
+			transport = session.getTransport("smtp");
+            
+            transport.connect(mailConfig.getSmtpHost(),
+            		StringUtils.toInt(mailConfig.getSmtpPort()),
+            		mailConfig.getUserName(),
+                    mailConfig.getUserPassword());
+             
+            transport.sendMessage(message, message.getAllRecipients());
+			}catch(Exception e){
+				throw e;
+			}finally{
+				if (transport != null) {
+					try {
+						transport.close();
+					} catch (Exception ex) {
+					}
+				}
+			}
+		}else if(ImmutableValues.APP_CONF_MAIL_ENCRYPT_TLS.equals(mailEncryptType)){
+			//TLS
+			Transport.send(message);
+		}else{
+			//Do nothing
+			LogUtils.e(ImmutableValues.MAIL_SEND_TAG, "unknown encrypt type. mail not sended ...");
+		}
 	}
 	
 }

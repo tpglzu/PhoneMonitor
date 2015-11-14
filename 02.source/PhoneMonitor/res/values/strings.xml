@@ -22,15 +22,23 @@
     <string name="activity_setting_switch_off">关</string>
     <string name="activity_setting_botton_back">返回</string>
     <string name="activity_setting_botton_save">保存</string>
-    <string name="activity_setting_botton_mailtest">邮件测试</string>
+    <string name="activity_setting_botton_mailtest_main">邮件测试(主)</string>
+    <string name="activity_setting_botton_mailtest_spare_1">邮件测试(备用一)</string>
+    <string name="activity_setting_botton_mailtest_spare_2">邮件测试(备用二)</string>
     <string name="activity_setting_mail_toaddress">Mail To:</string>
     <string name="activity_setting_mail_fromaddress">Mail From:</string>
     <string name="activity_setting_mail_smtphost">SMTP Host:</string>
     <string name="activity_setting_mail_smtpport">SMTP Port:</string>
     <string name="activity_setting_mail_smtpauth">SMTP Auth:</string>
     <string name="activity_setting_mail_startTls">Start Tls:</string>
+    <string name="activity_setting_mail_encrtpy">加密协议:</string>
+    <string name="activity_setting_mail_encrtpy_tls">TLS</string>
+    <string name="activity_setting_mail_encrtpy_ssl">SSL</string>
     <string name="activity_setting_mail_username">用户名:</string>
     <string name="activity_setting_mail_userpwd">用户密码:</string>
+    <string name="activity_setting_mail_main">Mail设置(主)</string>
+    <string name="activity_setting_mail_spare_1">Mail设置(备用一)</string>
+    <string name="activity_setting_mail_spare_2">Mail设置(备用二):</string>
 
     <string name="activity_main_textview_servicestatus_label">后台服务状态：</string>
     <string name="activity_main_textview_servicestatus_running">已启动</string>

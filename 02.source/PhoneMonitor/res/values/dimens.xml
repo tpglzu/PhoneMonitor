@@ -11,5 +11,8 @@
     
     <dimen name="activity_setting_mail_label_width">40dp</dimen>
     <dimen name="activity_setting_mail_value_width">60dp</dimen>
+    
+    <dimen name="activity_setting_mail_head_line_height">3dp</dimen>
+    <dimen name="activity_setting_mail_head_line_margeTop">15dp</dimen>
 
 </resources>

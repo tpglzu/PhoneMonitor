@@ -16,5 +16,5 @@
     <style name="AppTheme" parent="AppBaseTheme">
         <!-- All customizations that are NOT specific to a particular API-level can go here. -->
     </style>
-
+    <color name="activity_setting_mail_head_line_color">#000000</color>
 </resources>

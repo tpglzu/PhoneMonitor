@@ -1,6 +1,7 @@
 package com.daipeng.phonemonitor.activity;
 
 import java.util.Date;
+import java.util.List;
 
 import com.daipeng.phonemonitor.R;
 import com.daipeng.phonemonitor.comon.ImmutableValues;
@@ -9,6 +10,7 @@ import com.daipeng.phonemonitor.tasks.AsyncMailSendTask;
 import com.daipeng.phonemonitor.utils.DateUtils;
 import com.daipeng.phonemonitor.utils.LogUtils;
 import com.daipeng.phonemonitor.utils.MailConfig;
+import com.daipeng.phonemonitor.utils.MailContent;
 import com.daipeng.phonemonitor.utils.LogUtils.LogType;
 import com.daipeng.phonemonitor.utils.ServiceUtils;
 
@@ -127,13 +129,14 @@ public class MainActivity extends Activity implements ImmutableValues{
 	
 	public void onCollectLogs(View source){
 		LogUtils.log(LogType.DEBUG,SETTING_ACTIVE_TAG, "onCollectLogs start...");
-		MailConfig mailConfig = MailConfig.loadMailConfig(this);
-		mailConfig.setSubject(MSG_MAIL_SUBJECT_LOGCOLLECT + " - " + DateUtils.formateYMDHMS(new Date()));
-		mailConfig.setMsgBody("Log Collection");
-		mailConfig.setAttachFile(LogUtils.getLogFiles(LOGCOLLECT_MAX));
+		List<MailConfig> mailConfigs = MailConfig.loadMailConfigList(this);
+		MailContent mailContent = new MailContent();
+		mailContent.setSubject(MSG_MAIL_SUBJECT_LOGCOLLECT + " - " + DateUtils.formateYMDHMS(new Date()));
+		mailContent.setMsgBody("Log Collection");
+		mailContent.setAttachFile(LogUtils.getLogFiles(LOGCOLLECT_MAX));
 		
 		Uri.Builder builder = new Uri.Builder();
-        AsyncMailSendTask task = new AsyncMailSendTask(mailConfig);
+        AsyncMailSendTask task = new AsyncMailSendTask(mailConfigs,mailContent);
         task.execute(builder);
 		
         Toast.makeText(this, "Log“—∑¢ÀÕ", Toast.LENGTH_LONG).show();

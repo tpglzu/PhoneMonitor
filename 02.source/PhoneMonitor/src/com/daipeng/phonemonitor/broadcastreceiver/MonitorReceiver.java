@@ -12,6 +12,7 @@ import com.daipeng.phonemonitor.utils.ContactUtils;
 import com.daipeng.phonemonitor.utils.DateUtils;
 import com.daipeng.phonemonitor.utils.LogUtils;
 import com.daipeng.phonemonitor.utils.MailConfig;
+import com.daipeng.phonemonitor.utils.MailContent;
 import com.daipeng.phonemonitor.utils.MailSenderUtils;
 import com.daipeng.phonemonitor.utils.NetworkUtils;
 import com.daipeng.phonemonitor.utils.PrefsUtils;
@@ -54,9 +55,10 @@ public class MonitorReceiver extends BroadcastReceiver implements ImmutableValue
 	
 	public void onReceive(Context context, Intent intent) {
 		
-		MailConfig mailConfig = MailConfig.loadMailConfig(settings);
+		List<MailConfig> mailConfigs = MailConfig.loadMailConfigList(settings);
+		MailContent mailContent = new MailContent();
 		
-		if(!mailConfig.isValiable()){
+		if(mailConfigs == null || mailConfigs.size() < 1){
 			LogUtils.e(ImmutableValues.MONITOR_RECEIVER_TAG, "mail setting is wrong.");
 			return;
 		}
@@ -164,12 +166,12 @@ public class MonitorReceiver extends BroadcastReceiver implements ImmutableValue
 		}
 		
 		if(!TextUtils.isEmpty(mailSubject) && !TextUtils.isEmpty(mailBody)){
-			mailConfig.setSubject(mailSubject);
-			mailConfig.setMsgBody(mailBody);
-			mailConfig.setAttachFile(attachFiles);
+			mailContent.setSubject(mailSubject);
+			mailContent.setMsgBody(mailBody);
+			mailContent.setAttachFile(attachFiles);
 			
 			Uri.Builder builder = new Uri.Builder();
-	        AsyncMailSendTask task = new AsyncMailSendTask(mailConfig);
+	        AsyncMailSendTask task = new AsyncMailSendTask(mailConfigs,mailContent);
 	        task.execute(builder);
 		}	
 		

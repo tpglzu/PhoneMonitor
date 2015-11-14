@@ -1,16 +1,11 @@
 package com.daipeng.phonemonitor.utils;
 
-import java.util.Arrays;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
-
-import com.daipeng.phonemonitor.comon.ImmutableValues;
 
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
-import android.text.TextUtils;
 
 /**
  * SharedPreferences的读取和写入Utils

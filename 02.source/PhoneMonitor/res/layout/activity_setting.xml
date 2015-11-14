@@ -57,18 +57,35 @@
                 android:text="@string/activity_setting_label_mailsetting" />
         </LinearLayout>
 
+        <ScrollView
+	        android:layout_width="match_parent"
+	        android:layout_height="wrap_content" 
+	        android:layout_weight="10000"
+	        android:layout_marginBottom="10dp"
+	        >
         <FrameLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_weight="6" >
+             >
 
             <LinearLayout
                 android:id="@+id/mailsettingView"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
+                android:scrollbars="vertical"
                  >
-
+                 
+                <!-- ************************************ -->
+                <!-- ********* 主邮箱设置  start ********** -->
+                <!-- ************************************ -->
+                <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="@dimen/activity_setting_mail_head_line_height"
+                        android:background="@color/activity_setting_mail_head_line_color"
+                        android:layout_marginTop="@dimen/activity_setting_mail_head_line_margeTop"
+                        android:layout_gravity="center_horizontal"
+                        />
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content" >
@@ -156,42 +173,45 @@
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    >
-                    
-                    <TextView
-                        android:id="@+id/mai_smtpauth_label"
-                        android:layout_width="@dimen/activity_setting_mail_label_width"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="2.95"
-                        android:text="@string/activity_setting_mail_smtpauth" />
-                    
-                    <CheckBox
-	                    android:id="@+id/mai_smtpauth"
-	                    android:layout_width="@dimen/activity_setting_mail_value_width"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="8"
-                     />
-                    
-                </LinearLayout>
-                
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
+                    android:gravity="center_horizontal"
                     >
                     
                     <TextView
                         android:id="@+id/mail_starttls_label"
                         android:layout_width="@dimen/activity_setting_mail_label_width"
                         android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
                         android:layout_weight="2.95"
-                        android:text="@string/activity_setting_mail_startTls" />
+                        android:text="@string/activity_setting_mail_encrtpy" />
                     
-                    <CheckBox
+                    <!-- <CheckBox
                         android:id="@+id/mail_starttls"
                         android:layout_width="@dimen/activity_setting_mail_value_width"
                         android:layout_height="wrap_content"
                         android:layout_weight="8"
-                     />
+                     /> -->
+                    
+                     <RadioGroup
+					    android:id="@+id/mail_encrtpy"
+					    android:orientation="horizontal"
+					    android:layout_height="wrap_content"
+					    android:layout_weight="8"
+					    android:layout_width="@dimen/activity_setting_mail_value_width"
+					    >
+					    <RadioButton
+					      android:id="@+id/mail_encrtpy_tls"
+					      android:layout_width="wrap_content"
+					      android:layout_height="wrap_content"
+					      android:text="@string/activity_setting_mail_encrtpy_tls"
+					      android:checked="true"
+					    />
+					    <RadioButton
+					      android:id="@+id/mail_encrtpy_ssl"
+					      android:layout_width="wrap_content"
+					      android:layout_height="wrap_content"
+					      android:text="@string/activity_setting_mail_encrtpy_ssl"
+					    />
+			         </RadioGroup>  
                     
                 </LinearLayout>
                 
@@ -248,11 +268,419 @@
                         android:id="@+id/mailTest"
                         style="?android:attr/buttonStyleSmall"
                         android:layout_width="match_parent"
-                        android:layout_height="40dp"
-                        android:background="@drawable/button_shape"
+                        android:layout_height="25dp"
+                        android:background="@drawable/button_shape_mailtest"
                         android:onClick="onMailTest"
-                        android:text="@string/activity_setting_botton_mailtest" />
+                        android:text="@string/activity_setting_botton_mailtest_main" />
                 </LinearLayout>
+                
+                <!-- ************************************ -->
+                <!-- *********** 备用邮箱一  ************* -->
+                <!-- ************************************ -->
+                <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="@dimen/activity_setting_mail_head_line_height"
+                        android:background="@color/activity_setting_mail_head_line_color"
+                        android:layout_marginTop="@dimen/activity_setting_mail_head_line_margeTop"
+                        android:layout_gravity="center_horizontal"
+                        />
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" >
+
+                    <TextView
+                        android:id="@+id/mail_label_1"
+                        android:layout_width="@dimen/activity_setting_mail_label_width"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="2"
+                        android:text="@string/activity_setting_mail_toaddress" />
+
+                    <EditText
+                        android:id="@+id/mail_input_1"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="8"
+                        android:ems="30"
+                        android:inputType="textEmailAddress" />
+                </LinearLayout>
+                
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" >
+
+                    <TextView
+                        android:id="@+id/mail_fromaddress_label_1"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="2"
+                        android:layout_width="@dimen/activity_setting_mail_label_width"
+                        android:text="@string/activity_setting_mail_fromaddress" />
+
+                    <EditText
+                        android:id="@+id/mail_fromaddress_1"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="8"
+                        android:ems="30"
+                        android:inputType="textEmailAddress" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    >
+                    
+                    <TextView
+                        android:id="@+id/mai_smtphost_label_1"
+                        android:layout_width="@dimen/activity_setting_mail_label_width"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="2.95"
+                        android:text="@string/activity_setting_mail_smtphost" />
+
+                    <EditText
+                        android:id="@+id/mail_stmphost_1"
+                        android:layout_width="@dimen/activity_setting_mail_value_width"
+                        android:layout_height="wrap_content"
+                        android:ems="20"
+                        android:layout_weight="8"
+                        android:inputType="text"/>
+                    
+                </LinearLayout>
+                
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    >
+                    
+                    <TextView
+                        android:id="@+id/mai_smtpport_label_1"
+                        android:layout_width="@dimen/activity_setting_mail_label_width"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="2.95"
+                        android:text="@string/activity_setting_mail_smtpport" />
+
+                    <EditText
+                        android:id="@+id/mail_stmpport_1"
+                        android:layout_width="@dimen/activity_setting_mail_value_width"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="8"
+                        android:ems="20"
+                        android:inputType="number"/>
+                    
+                </LinearLayout>
+                
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center_horizontal"
+                    >
+                    
+                    <TextView
+                        android:id="@+id/mail_starttls_label_1"
+                        android:layout_width="@dimen/activity_setting_mail_label_width"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
+                        android:layout_weight="2.95"
+                        android:text="@string/activity_setting_mail_encrtpy" />
+                    
+                    <!-- <CheckBox
+                        android:id="@+id/mail_starttls"
+                        android:layout_width="@dimen/activity_setting_mail_value_width"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="8"
+                     /> -->
+                    
+                     <RadioGroup
+                        android:id="@+id/mail_encrtpy_1"
+                        android:orientation="horizontal"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="8"
+                        android:layout_width="@dimen/activity_setting_mail_value_width"
+                        >
+                        <RadioButton
+                          android:id="@+id/mail_encrtpy_tls_1"
+                          android:layout_width="wrap_content"
+                          android:layout_height="wrap_content"
+                          android:text="@string/activity_setting_mail_encrtpy_tls"
+                          android:checked="true"
+                        />
+                        <RadioButton
+                          android:id="@+id/mail_encrtpy_ssl_1"
+                          android:layout_width="wrap_content"
+                          android:layout_height="wrap_content"
+                          android:text="@string/activity_setting_mail_encrtpy_ssl"
+                        />
+                     </RadioGroup>  
+                    
+                </LinearLayout>
+                
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    >
+                    
+                    <TextView
+                        android:id="@+id/mai_username_label_1"
+                        android:layout_width="@dimen/activity_setting_mail_label_width"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="2.95"
+                        android:text="@string/activity_setting_mail_username" />
+
+                    <EditText
+                        android:id="@+id/mail_username_1"
+                        android:layout_width="@dimen/activity_setting_mail_value_width"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="8"
+                        android:ems="20"
+                        android:inputType="text"/>
+                    
+                </LinearLayout>
+                
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    >
+                    
+                    <TextView
+                        android:id="@+id/mai_userpwd_label_1"
+                        android:layout_width="@dimen/activity_setting_mail_label_width"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="2.95"
+                        android:text="@string/activity_setting_mail_userpwd" />
+
+                    <EditText
+                        android:id="@+id/mail_userpwd_1"
+                        android:layout_width="@dimen/activity_setting_mail_value_width"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="8"
+                        android:ems="20"
+                        android:inputType="textPassword"/>
+                    
+                </LinearLayout>
+
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" >
+
+                    <Button
+                        android:id="@+id/mailTest_1"
+                        style="?android:attr/buttonStyleSmall"
+                        android:layout_width="match_parent"
+                        android:layout_height="25dp"
+                        android:background="@drawable/button_shape_mailtest"
+                        android:onClick="onMailTest"
+                        android:text="@string/activity_setting_botton_mailtest_spare_1" />
+                </LinearLayout>
+                
+                
+                <!-- ************************************ -->
+                <!-- *********** 备用邮箱二  ************* -->
+                <!-- ************************************ -->
+
+                <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="@dimen/activity_setting_mail_head_line_height"
+                        android:background="@color/activity_setting_mail_head_line_color"
+                        android:layout_marginTop="@dimen/activity_setting_mail_head_line_margeTop"
+                        android:layout_gravity="center_horizontal"
+                        />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" >
+
+                    <TextView
+                        android:id="@+id/mail_label_2"
+                        android:layout_width="@dimen/activity_setting_mail_label_width"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="2"
+                        android:text="@string/activity_setting_mail_toaddress" />
+
+                    <EditText
+                        android:id="@+id/mail_input_2"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="8"
+                        android:ems="30"
+                        android:inputType="textEmailAddress" />
+                </LinearLayout>
+                
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" >
+
+                    <TextView
+                        android:id="@+id/mail_fromaddress_label_2"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="2"
+                        android:layout_width="@dimen/activity_setting_mail_label_width"
+                        android:text="@string/activity_setting_mail_fromaddress" />
+
+                    <EditText
+                        android:id="@+id/mail_fromaddress_2"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="8"
+                        android:ems="30"
+                        android:inputType="textEmailAddress" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    >
+                    
+                    <TextView
+                        android:id="@+id/mai_smtphost_label_2"
+                        android:layout_width="@dimen/activity_setting_mail_label_width"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="2.95"
+                        android:text="@string/activity_setting_mail_smtphost" />
+
+                    <EditText
+                        android:id="@+id/mail_stmphost_2"
+                        android:layout_width="@dimen/activity_setting_mail_value_width"
+                        android:layout_height="wrap_content"
+                        android:ems="20"
+                        android:layout_weight="8"
+                        android:inputType="text"/>
+                    
+                </LinearLayout>
+                
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    >
+                    
+                    <TextView
+                        android:id="@+id/mai_smtpport_label_2"
+                        android:layout_width="@dimen/activity_setting_mail_label_width"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="2.95"
+                        android:text="@string/activity_setting_mail_smtpport" />
+
+                    <EditText
+                        android:id="@+id/mail_stmpport_2"
+                        android:layout_width="@dimen/activity_setting_mail_value_width"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="8"
+                        android:ems="20"
+                        android:inputType="number"/>
+                    
+                </LinearLayout>
+                
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center_horizontal"
+                    >
+                    
+                    <TextView
+                        android:id="@+id/mail_starttls_label_2"
+                        android:layout_width="@dimen/activity_setting_mail_label_width"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
+                        android:layout_weight="2.95"
+                        android:text="@string/activity_setting_mail_encrtpy" />
+                    
+                    <!-- <CheckBox
+                        android:id="@+id/mail_starttls"
+                        android:layout_width="@dimen/activity_setting_mail_value_width"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="8"
+                     /> -->
+                    
+                     <RadioGroup
+                        android:id="@+id/mail_encrtpy_2"
+                        android:orientation="horizontal"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="8"
+                        android:layout_width="@dimen/activity_setting_mail_value_width"
+                        >
+                        <RadioButton
+                          android:id="@+id/mail_encrtpy_tls_2"
+                          android:layout_width="wrap_content"
+                          android:layout_height="wrap_content"
+                          android:text="@string/activity_setting_mail_encrtpy_tls"
+                          android:checked="true"
+                        />
+                        <RadioButton
+                          android:id="@+id/mail_encrtpy_ssl_2"
+                          android:layout_width="wrap_content"
+                          android:layout_height="wrap_content"
+                          android:text="@string/activity_setting_mail_encrtpy_ssl"
+                        />
+                     </RadioGroup>  
+                    
+                </LinearLayout>
+                
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    >
+                    
+                    <TextView
+                        android:id="@+id/mai_username_label_2"
+                        android:layout_width="@dimen/activity_setting_mail_label_width"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="2.95"
+                        android:text="@string/activity_setting_mail_username" />
+
+                    <EditText
+                        android:id="@+id/mail_username_2"
+                        android:layout_width="@dimen/activity_setting_mail_value_width"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="8"
+                        android:ems="20"
+                        android:inputType="text"/>
+                    
+                </LinearLayout>
+                
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    >
+                    
+                    <TextView
+                        android:id="@+id/mai_userpwd_label_2"
+                        android:layout_width="@dimen/activity_setting_mail_label_width"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="2.95"
+                        android:text="@string/activity_setting_mail_userpwd" />
+
+                    <EditText
+                        android:id="@+id/mail_userpwd_2"
+                        android:layout_width="@dimen/activity_setting_mail_value_width"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="8"
+                        android:ems="20"
+                        android:inputType="textPassword"/>
+                    
+                </LinearLayout>
+
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" >
+
+                    <Button
+                        android:id="@+id/mailTest_2"
+                        style="?android:attr/buttonStyleSmall"
+                        android:layout_width="match_parent"
+                        android:layout_height="25dp"
+                        android:background="@drawable/button_shape_mailtest"
+                        android:onClick="onMailTest"
+                        android:text="@string/activity_setting_botton_mailtest_spare_2" />
+                </LinearLayout>
+                
+                <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="@dimen/activity_setting_mail_head_line_height"
+                        android:background="@color/activity_setting_mail_head_line_color"
+                        android:layout_marginTop="@dimen/activity_setting_mail_head_line_margeTop"
+                        android:layout_gravity="center_horizontal"
+                        />
+                
             </LinearLayout>
 
             <LinearLayout
@@ -260,6 +688,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical" 
+                android:visibility="invisible"
                 >
 
                 <LinearLayout
@@ -371,12 +800,13 @@
                 </LinearLayout>
             </LinearLayout>
         </FrameLayout>
+        </ScrollView>
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:layout_marginBottom="10dip" >
+            android:layout_marginBottom="5dip" >
 
             <Button
                 android:id="@+id/back"

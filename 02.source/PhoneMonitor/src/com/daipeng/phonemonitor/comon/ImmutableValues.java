@@ -13,20 +13,45 @@ public interface ImmutableValues {
 	
     //configuration file name
 	public static final String APP_CONF_FILE_NAME = "MONITOR_CONF";
-	//configuration key for mail to
-	public static final String APP_CONF_MAILTO_KEY = "MAIL_TO";
 	//default configuration value for mail to
 	public static final String APP_CONF_MAILTO_VALUE = "tangpenggui@gmail.com";
 	public static final String APP_CONF_PHONEFLG_KEY = "PHONE_FLG";
 	public static final String APP_CONF_SMSFLG_KEY = "SMS_FLG";
 	public static final String APP_CONF_BATTERYFLG_KEY = "BATTERY_FLG";
+
+	public static final String APP_CONF_MAIL_STARTTLS_KEY = "MAIL_SMTP_STARTTLS";
+	
+	public static final String APP_CONF_MAIL_ENCRYPT_TLS = "TLS";
+	public static final String APP_CONF_MAIL_ENCRYPT_SSL = "SSL";
+	
+	//configuration key for mail to
+	public static final String APP_CONF_MAILTO_KEY = "MAIL_TO";
+	public static final String APP_CONF_MAIL_FROMADDRESS_KEY = "MAIL_SMTP_FROMADDRESS";
 	public static final String APP_CONF_MAIL_SMTPHOST_KEY = "MAIL_SMTP_HOST";
 	public static final String APP_CONF_MAIL_SMTPPORT_KEY = "MAIL_SMTP_PORT";
+	public static final String APP_CONF_MAIL_ENCRYPT_KEY = "MAIL_SMTP_ENCRYPT";
 	public static final String APP_CONF_MAIL_SMTPAUTH_KEY = "MAIL_SMTP_AUTH";
-	public static final String APP_CONF_MAIL_FROMADDRESS_KEY = "MAIL_SMTP_FROMADDRESS";
-	public static final String APP_CONF_MAIL_STARTTLS_KEY = "MAIL_SMTP_STARTTLS";
 	public static final String APP_CONF_MAIL_USERNAME_KEY = "MAIL_SMTP_USERNAME";
 	public static final String APP_CONF_MAIL_USERPWD_KEY = "MAIL_SMTP_USERPWD";
+	
+	public static final String APP_CONF_MAILTO_SPARE_1_KEY = "MAIL_TO_SPARE_1"; 
+	public static final String APP_CONF_MAIL_FROMADDRESS_SPARE_1_KEY = "MAIL_SMTP_FROMADDRESS_SPARE_1";
+	public static final String APP_CONF_MAIL_SMTPHOST_SPARE_1_KEY = "MAIL_SMTP_HOST_SPARE_1";
+	public static final String APP_CONF_MAIL_SMTPAUTH_SPARE_1_KEY = "MAIL_SMTP_AUTHSPARE_1";
+	public static final String APP_CONF_MAIL_SMTPPORT_SPARE_1_KEY = "MAIL_SMTP_PORT_SPARE_1";
+	public static final String APP_CONF_MAIL_ENCRYPT_SPARE_1_KEY = "MAIL_SMTP_ENCRYPT_SPARE_1";
+	public static final String APP_CONF_MAIL_USERNAME_SPARE_1_KEY = "MAIL_SMTP_USERNAME_SPARE_1";
+	public static final String APP_CONF_MAIL_USERPWD_SPARE_1_KEY = "MAIL_SMTP_USERPWD_SPARE_1";
+	
+	public static final String APP_CONF_MAILTO_SPARE_2_KEY = "MAIL_TO_SPARE_2"; 
+	public static final String APP_CONF_MAIL_FROMADDRESS_SPARE_2_KEY = "MAIL_SMTP_FROMADDRESS_SPARE_2";
+	public static final String APP_CONF_MAIL_SMTPHOST_SPARE_2_KEY = "MAIL_SMTP_HOST_SPARE_2";
+	public static final String APP_CONF_MAIL_SMTPPORT_SPARE_2_KEY = "MAIL_SMTP_PORT_SPARE_2";
+	public static final String APP_CONF_MAIL_ENCRYPT_SPARE_2_KEY = "MAIL_SMTP_ENCRYPT_SPARE_2";
+	public static final String APP_CONF_MAIL_SMTPAUTH_SPARE_2_KEY = "MAIL_SMTP_AUTHSPARE_2";
+	public static final String APP_CONF_MAIL_USERNAME_SPARE_2_KEY = "MAIL_SMTP_USERNAME_SPARE_2";
+	public static final String APP_CONF_MAIL_USERPWD_SPARE_2_KEY = "MAIL_SMTP_USERPWD_SPARE_2";
+	
 	// ,
 	public static final int LOGCOLLECT_MAX = 5;
 	
