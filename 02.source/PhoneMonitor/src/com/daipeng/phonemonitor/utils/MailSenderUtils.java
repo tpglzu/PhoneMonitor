@@ -71,7 +71,7 @@ public class MailSenderUtils {
     		LogUtils.e(ImmutableValues.MAIL_SEND_TAG, "¡ï¡ï¡ï mail config not correct ...¡ï¡ï¡ï ");
     	}
     	
-        Session session = Session.getDefaultInstance(properties, new javax.mail.Authenticator(){
+        Session session = Session.getInstance(properties, new javax.mail.Authenticator(){
             protected PasswordAuthentication getPasswordAuthentication(){
                 return new PasswordAuthentication(mailConfig.getUserName(),mailConfig.getUserPassword());
             }
@@ -84,7 +84,7 @@ public class MailSenderUtils {
             message.setFrom(new InternetAddress(from));
             
             for (String toAddr : to) {
-            	LogUtils.d(ImmutableValues.MAIL_SEND_TAG,"send to : " + toAddr);
+//            	LogUtils.d(ImmutableValues.MAIL_SEND_TAG,"send to : " + toAddr);
             	message.addRecipient(Message.RecipientType.TO, new InternetAddress(toAddr));
 			}
             
@@ -154,7 +154,7 @@ public class MailSenderUtils {
 	
 	private static Properties getMailProperties(MailConfig mailConfig){
 		
-		Properties properties =System.getProperties();
+		Properties properties =new Properties();
 		
 		String mailEncryptType = mailConfig.getSmtpEncryptType();
 		properties.put(MailConfig.KEY_MAIL_SMTP_HOST, mailConfig.getSmtpHost());

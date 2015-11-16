@@ -7,6 +7,7 @@ import java.util.Map;
 import com.daipeng.phonemonitor.R;
 import com.daipeng.phonemonitor.comon.ImmutableValues;
 import com.daipeng.phonemonitor.tasks.AsyncMailSendTask;
+import com.daipeng.phonemonitor.utils.DateUtils;
 import com.daipeng.phonemonitor.utils.LogUtils;
 import com.daipeng.phonemonitor.utils.LogUtils.LogType;
 import com.daipeng.phonemonitor.utils.MailConfig;
@@ -240,10 +241,79 @@ public class SettingsActivity extends Activity implements ImmutableValues{
 	 */
 	public void onSave(View source){
 		
-		String phoneFlg = FLG_OFF;
-		String smsFlg = FLG_OFF;
-		String batteryFlg = FLG_OFF;
+		Map<String,String> settings = new HashMap<String, String>();
+		
+		getBaseicSettingInput(settings);
+		
+		getMailMainSettingInput(settings);
+		
+		getMailSpare1SettingInput(settings);
+		
+		getMailSpare2SettingInput(settings);
+		
+		PrefsUtils.save(this, settings, APP_CONF_FILE_NAME);
+		
+		LogUtils.log(LogType.INFO,SETTING_ACTIVE_TAG, "program setting has been changed...");
+		Toast.makeText(this, "Setting Change Successful", Toast.LENGTH_LONG).show();;
+	}
 
+	private void getMailSpare2SettingInput(Map<String, String> settings) {
+		String mailAddrInput = mailInputViewSpare2.getText().toString();
+		String mailEncryptType = APP_CONF_MAIL_ENCRYPT_TLS;
+		String mailFromAddress = mailFromAddressViewSpare2.getText().toString();
+		String mailSmtpHost = mailSmtpHostViewSpare2.getText().toString();
+		String mailSmtpPort = mailSmtpPortViewSpare2.getText().toString();
+		String mailSmtpAuth = TRUE;
+		String mailUserName = mailUserNameViewSpare2.getText().toString();
+		String mailUserPwd = mailUserPwdViewSpare2.getText().toString();				
+		int mailEncryptId = mailEncryptViewSpare2.getCheckedRadioButtonId();
+
+		if(mailEncryptId == R.id.mail_encrtpy_tls_2){
+			mailEncryptType = APP_CONF_MAIL_ENCRYPT_TLS;
+		}else if(mailEncryptId == R.id.mail_encrtpy_ssl_2){
+			mailEncryptType = APP_CONF_MAIL_ENCRYPT_SSL;
+		}
+		
+		settings.put(APP_CONF_MAILTO_SPARE_2_KEY, mailAddrInput);
+		settings.put(APP_CONF_MAIL_FROMADDRESS_SPARE_2_KEY,mailFromAddress);
+		settings.put(APP_CONF_MAIL_SMTPHOST_SPARE_2_KEY,mailSmtpHost);
+		settings.put(APP_CONF_MAIL_SMTPPORT_SPARE_2_KEY,mailSmtpPort);
+		settings.put(APP_CONF_MAIL_SMTPAUTH_SPARE_2_KEY,mailSmtpAuth);
+		settings.put(APP_CONF_MAIL_USERNAME_SPARE_2_KEY,mailUserName);
+		settings.put(APP_CONF_MAIL_USERPWD_SPARE_2_KEY,mailUserPwd);
+		settings.put(APP_CONF_MAIL_ENCRYPT_SPARE_2_KEY,mailEncryptType);
+		
+	}
+
+	private void getMailSpare1SettingInput(Map<String, String> settings) {
+		String mailAddrInput = mailInputViewSpare1.getText().toString();
+		String mailEncryptType = APP_CONF_MAIL_ENCRYPT_TLS;
+		String mailFromAddress = mailFromAddressViewSpare1.getText().toString();
+		String mailSmtpHost = mailSmtpHostViewSpare1.getText().toString();
+		String mailSmtpPort = mailSmtpPortViewSpare1.getText().toString();
+		String mailSmtpAuth = TRUE;
+		String mailUserName = mailUserNameViewSpare1.getText().toString();
+		String mailUserPwd = mailUserPwdViewSpare1.getText().toString();				
+		int mailEncryptId = mailEncryptViewSpare1.getCheckedRadioButtonId();
+
+		if(mailEncryptId == R.id.mail_encrtpy_tls_1){
+			mailEncryptType = APP_CONF_MAIL_ENCRYPT_TLS;
+		}else if(mailEncryptId == R.id.mail_encrtpy_ssl_1){
+			mailEncryptType = APP_CONF_MAIL_ENCRYPT_SSL;
+		}
+		
+		settings.put(APP_CONF_MAILTO_SPARE_1_KEY, mailAddrInput);
+		settings.put(APP_CONF_MAIL_FROMADDRESS_SPARE_1_KEY,mailFromAddress);
+		settings.put(APP_CONF_MAIL_SMTPHOST_SPARE_1_KEY,mailSmtpHost);
+		settings.put(APP_CONF_MAIL_SMTPPORT_SPARE_1_KEY,mailSmtpPort);
+		settings.put(APP_CONF_MAIL_SMTPAUTH_SPARE_1_KEY,mailSmtpAuth);
+		settings.put(APP_CONF_MAIL_USERNAME_SPARE_1_KEY,mailUserName);
+		settings.put(APP_CONF_MAIL_USERPWD_SPARE_1_KEY,mailUserPwd);
+		settings.put(APP_CONF_MAIL_ENCRYPT_SPARE_1_KEY,mailEncryptType);
+		
+	}
+
+	private void getMailMainSettingInput(Map<String, String> settings) {
 		String mailAddrInput = mailInputView.getText().toString();
 		String mailEncryptType = APP_CONF_MAIL_ENCRYPT_TLS;
 		String mailFromAddress = mailFromAddressView.getText().toString();
@@ -260,6 +330,22 @@ public class SettingsActivity extends Activity implements ImmutableValues{
 			mailEncryptType = APP_CONF_MAIL_ENCRYPT_SSL;
 		}
 		
+		settings.put(APP_CONF_MAILTO_KEY, mailAddrInput);
+		settings.put(APP_CONF_MAIL_FROMADDRESS_KEY,mailFromAddress);
+		settings.put(APP_CONF_MAIL_SMTPHOST_KEY,mailSmtpHost);
+		settings.put(APP_CONF_MAIL_SMTPPORT_KEY,mailSmtpPort);
+		settings.put(APP_CONF_MAIL_SMTPAUTH_KEY,mailSmtpAuth);
+		settings.put(APP_CONF_MAIL_USERNAME_KEY,mailUserName);
+		settings.put(APP_CONF_MAIL_USERPWD_KEY,mailUserPwd);
+		settings.put(APP_CONF_MAIL_ENCRYPT_KEY,mailEncryptType);
+		
+	}
+
+	private void getBaseicSettingInput(Map<String, String> settings) {
+		String phoneFlg = FLG_OFF;
+		String smsFlg = FLG_OFF;
+		String batteryFlg = FLG_OFF;
+		
 		if(phoneSwitchView.isChecked()){
 			phoneFlg = FLG_ON;
 		}
@@ -270,25 +356,10 @@ public class SettingsActivity extends Activity implements ImmutableValues{
 			batteryFlg = FLG_ON;
 		}
 		
-		Map<String,String> settings = new HashMap<String, String>();
-		settings.put(APP_CONF_MAILTO_KEY, mailAddrInput);
 		settings.put(APP_CONF_PHONEFLG_KEY, phoneFlg);
 		settings.put(APP_CONF_SMSFLG_KEY, smsFlg);
 		settings.put(APP_CONF_BATTERYFLG_KEY, batteryFlg);
-		settings.put(APP_CONF_MAIL_FROMADDRESS_KEY,mailFromAddress);
-		settings.put(APP_CONF_MAIL_SMTPHOST_KEY,mailSmtpHost);
-		settings.put(APP_CONF_MAIL_SMTPPORT_KEY,mailSmtpPort);
-		settings.put(APP_CONF_MAIL_SMTPAUTH_KEY,mailSmtpAuth);
-		settings.put(APP_CONF_MAIL_USERNAME_KEY,mailUserName);
-		settings.put(APP_CONF_MAIL_USERPWD_KEY,mailUserPwd);
-		settings.put(APP_CONF_MAIL_ENCRYPT_KEY,mailEncryptType);
-		
-		PrefsUtils.save(this, settings, APP_CONF_FILE_NAME);
-		
-		LogUtils.log(LogType.INFO,SETTING_ACTIVE_TAG, "program setting has been changed...");
-		Toast.makeText(this, "Setting Change Successful", Toast.LENGTH_LONG).show();;
 	}
-	
 
 	public void onBasicSetting(View source){
 		basicSettingButton.setEnabled(false);
@@ -333,6 +404,11 @@ public class SettingsActivity extends Activity implements ImmutableValues{
 				mailUserName = mailUserNameView.getText().toString();
 				mailUserPwd = mailUserPwdView.getText().toString();
 				mailConfigKbn = MailConfigKbn.MAIN;
+				if(mailEncryptId == R.id.mail_encrtpy_tls){
+					mailEncryptType = APP_CONF_MAIL_ENCRYPT_TLS;
+				}else if(mailEncryptId == R.id.mail_encrtpy_ssl){
+					mailEncryptType = APP_CONF_MAIL_ENCRYPT_SSL;
+				}
 				break;
 			case R.id.mailTest_1:
 				mailAddrInput = mailInputViewSpare1.getText().toString();
@@ -343,6 +419,11 @@ public class SettingsActivity extends Activity implements ImmutableValues{
 				mailUserName = mailUserNameViewSpare1.getText().toString();
 				mailUserPwd = mailUserPwdViewSpare1.getText().toString();
 				mailConfigKbn = MailConfigKbn.SPARE1;
+				if(mailEncryptId == R.id.mail_encrtpy_tls_1){
+					mailEncryptType = APP_CONF_MAIL_ENCRYPT_TLS;
+				}else if(mailEncryptId == R.id.mail_encrtpy_ssl_1){
+					mailEncryptType = APP_CONF_MAIL_ENCRYPT_SSL;
+				}
 				break;
 			case R.id.mailTest_2:
 				mailAddrInput = mailInputViewSpare2.getText().toString();
@@ -353,15 +434,14 @@ public class SettingsActivity extends Activity implements ImmutableValues{
 				mailUserName = mailUserNameViewSpare2.getText().toString();
 				mailUserPwd = mailUserPwdViewSpare2.getText().toString();
 				mailConfigKbn = MailConfigKbn.SPARE2;
+				if(mailEncryptId == R.id.mail_encrtpy_tls_2){
+					mailEncryptType = APP_CONF_MAIL_ENCRYPT_TLS;
+				}else if(mailEncryptId == R.id.mail_encrtpy_ssl_2){
+					mailEncryptType = APP_CONF_MAIL_ENCRYPT_SSL;
+				}
 				break;	
 			default:
 				break;
-		}
-		
-		if(mailEncryptId == R.id.mail_encrtpy_tls){
-			mailEncryptType = APP_CONF_MAIL_ENCRYPT_TLS;
-		}else if(mailEncryptId == R.id.mail_encrtpy_ssl){
-			mailEncryptType = APP_CONF_MAIL_ENCRYPT_SSL;
 		}
 		
 		mailConfig.setToAddress(StringUtils.strToList(mailAddrInput));
@@ -375,8 +455,8 @@ public class SettingsActivity extends Activity implements ImmutableValues{
 		mailConfig.setMailConfigKbn(mailConfigKbn);
 		
 		MailContent mailContent = new MailContent();
-		mailContent.setSubject("[Phone Monitor] Test" + new Date());
-		mailContent.setMsgBody("Do Test");
+		mailContent.setSubject("[Phone Monitor] Test" + DateUtils.formateYMDHMSS(new Date()));
+		mailContent.setMsgBody("Do Test From : " + mailConfigKbn.getName());
 		
 		Uri.Builder builder = new Uri.Builder();
         AsyncMailSendTask task = new AsyncMailSendTask(mailConfig,mailContent);

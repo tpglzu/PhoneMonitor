@@ -12,7 +12,6 @@ import com.daipeng.phonemonitor.utils.MailSenderUtils;
 import android.net.Uri;
 import android.net.Uri.Builder;
 import android.os.AsyncTask;
-import android.text.TextUtils;
 
 public class AsyncMailSendTask extends AsyncTask<Uri.Builder, Void, String> {
 	
@@ -27,7 +26,9 @@ public class AsyncMailSendTask extends AsyncTask<Uri.Builder, Void, String> {
 	public AsyncMailSendTask(MailConfig mailConfigs,MailContent mailContent){
 		List<MailConfig> mailConfigsParam = new ArrayList<MailConfig>();
 		mailConfigsParam.add(mailConfigs);
-		new AsyncMailSendTask(mailConfigsParam,mailContent);
+		
+		this.mailConfigs = mailConfigsParam;
+		this.mailContent = mailContent;
 	}
 	
 	@Override
@@ -44,10 +45,5 @@ public class AsyncMailSendTask extends AsyncTask<Uri.Builder, Void, String> {
 
     @Override
     protected void onPostExecute(String result) {
-    	if(TextUtils.isEmpty(result)){
-    		LogUtils.i(ImmutableValues.MAIL_SEND_TASK_TAG, "mail send successesful...");
-    	}else{
-    		LogUtils.e(ImmutableValues.MAIL_SEND_TASK_TAG, "mail send failed..."+result);
-    	}
     }
 }
